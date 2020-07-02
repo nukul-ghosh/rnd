@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        ul,
+        #fileTree {
+            list-style-type: none;
+        }
+
+        .caret {
+            cursor: pointer;
+            -webkit-user-select: none;
+            /* Safari 3.1+ */
+            -moz-user-select: none;
+            /* Firefox 2+ */
+            -ms-user-select: none;
+            /* IE 10+ */
+            user-select: none;
+        }
+
+        .caret::before {
+            content: "\25B6";
+            color: black;
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+        .caret-down::before {
+            -ms-transform: rotate(90deg);
+            /* IE 9 */
+            -webkit-transform: rotate(90deg);
+            /* Safari */
+
+transform: rotate(90deg);
+        }
+
+        .nested {
+            display: none;
+        }
+
+        .active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Tree View</h2>
+    <ul id="fileTree"></ul>
+
+    <script>
+        var filesTree = [
+                          {
+                            "name": "Host",
+                            "parentDirId": 0,
+                            "id": 1,
+                            "node": [
+                              {
+                                "name": "North America",
+                                "parentDirId": 1,
+                                "id": 2,
+                                "node": [
+                                  {
+                                    "name": "AL",
+                                    "parentDirId": 2,
+                                    "id": 3,
+                                    "node": [
+                                      {
+                                        "name": "AUBURN",
+                                        "parentDirId": 3,
+                                        "id": 8,
+                                        "node": [
+                                          {
+                                            "name": "Auburn Aren",
+                                            "parentDirId": 8,
+                                            "id": 18,
+                                            "node": [
+                                              {
+                                                "name": "Team1",
+                                                "parentDirId": 18,
+                                                "id": 76
+                                              },
+                                              {
+                                                "name": "Team2",
+                                                "parentDirId": 18,
+                                                "id": 77
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "name": "Montgomery",
+                                        "parentDirId": 3,
+                                        "id": 9,
+                                        "node": [
+                                          {
+                                            "name": "Garret Coliseum",
+                                            "parentDirId": 9,
+                                            "id": 19,
+                                            "node": [
+                                              {
+                                                "name": "team_carret",
+                                                "parentDirId": 19,
+                                                "id": 73
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "name": "AZ",
+                                    "parentDirId": 2,
+                                    "id": 4,
+                                    "node": [
+                                      {
+                                        "name": "Chandler",
+                                        "parentDirId": 4,
+                                        "id": 10,
+                                        "node": [
+                                          {
+                                            "name": "Lone Butte Casino",
+                                            "parentDirId": 10,
+                                            "id": 20
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "name": "MESA",
+                                        "parentDirId": 4,
+                                        "id": 11,
+                                        "node": [
+                                          {
+                                            "name": "SLOAN PARK",
+                                            "parentDirId": 11,
+                                            "id": 21
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "name": "CO",
+                                    "parentDirId": 2,
+                                    "id": 5,
+                                    "node": [
+                                      {
+                                        "name": "Berthoud",
+                                        "parentDirId": 5,
+                                        "id": 12,
+                                        "node": [
+                                          {
+                                            "name": "Grace Place",
+                                            "parentDirId": 12,
+                                            "id": 22
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "name": "Castle Rock",
+                                        "parentDirId": 5,
+                                        "id": 13,
+                                        "node": [
+                                          {
+                                            "name": "Douglas County Fairgrounds",
+                                            "parentDirId": 13,
+                                            "id": 23
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "name": "IA",
+                                    "parentDirId": 2,
+                                    "id": 6,
+                                    "node": [
+                                      {
+                                        "name": "Altoona",
+                                        "parentDirId": 6,
+                                        "id": 14,
+                                        "node": [
+                                          {
+                                            "name": "themeadows at prairie meadows",
+                                            "parentDirId": 14,
+                                            "id": 24
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "name": "Iowa City",
+                                        "parentDirId": 6,
+                                        "id": 15,
+                                        "node": [
+                                          {
+                                            "name": "Carver Hawkeye Arena",
+                                            "parentDirId": 15,
+                                            "id": 25,
+                                            "node": [
+                                              {
+                                                "name": "ghosh",
+                                                "parentDirId": 25,
+                                                "id": 74
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "name": "LA",
+                                    "parentDirId": 2,
+                                    "id": 7,
+                                    "node": [
+                                      {
+                                        "name": "Bossier City",
+                                        "parentDirId": 7,
+                                        "id": 16,
+                                        "node": [
+                                          {
+                                            "name": "Centurylink Center",
+                                            "parentDirId": 16,
+                                            "id": 26
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "name": "Harvey",
+                                        "parentDirId": 7,
+                                        "id": 17,
+                                        "node": [
+                                          {
+                                            "name": "Boomtown Casino",
+                                            "parentDirId": 17,
+                                            "id": 27,
+                                            "node": [
+                                              {
+                                                "name": "set 1",
+                                                "parentDirId": 27,
+                                                "id": 75
+                                              },
+                                              {
+                                                "name": "#set1",
+                                                "parentDirId": 27,
+                                                "id": 78
+                                              },
+                                              {
+                                                "name": "#nukul",
+                                                "parentDirId": 27,
+                                                "id": 79
+                                              },
+                                              {
+                                                "name": "%^&*&^%$#$%^&*",
+                                                "parentDirId": 27,
+                                                "id": 80
+                                              },
+                                              {
+                                                "name": "@#$%^&*()(*&^%$#$%^&*()(*&^%$#@#$%^&*()(*&^%$#@",
+                                                "parentDirId": 27,
+                                                "id": 81
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ];
+  // var toggler = document.querySelectorAll(".caret");
+        // var i;
+
+        // for (i = 0; i < toggler.length; i++) {
+        //     toggler[i].addEventListener("click", function () {
+
+        //         console.log(this);
+        //         this.parentElement.querySelector(".nested").classList.toggle("active");
+        //         this.classList.toggle("caret-down");
+        //         // console.log(this);
+        //     });
+        // }
+
+
+
+        // function craeteTree(data){
+        //     while (j < data.length) {
+        //         var childd = `<li id="tree${j}"><span>${data[j].name}</span></li>`;
+        //         addToParent(childd, null);
+        //
+        //         if (data[j].child.length > 0) {
+        //             var innerChild = document.querySelector('#tree' + j);
+        //             innerChild.appendChild(document.createElement('ul'));
+        //             // craeteTree(data[j].child);
+        //             var innerChildAppend = createChildElemenets(data[j].child, j);
+        //
+        //             addToParent(innerChildAppend, '#tree' + j);
+        //
+        //         }
+        //
+        //         j++;
+        //     }
+        // }
+
+        var treeHldr = document.querySelector("#fileTree");
+        var parseType = "text/html";
+        craeteTree(filesTree);
+
+        //** adding event delegatiopn **//
+        treeHldr.addEventListener("click", (e)=>{
+          e.preventDefault;
+          checkForInnerChild(e, filesTree);
+        });
+
+        //** Checking for Inner child **//
+        function checkForInnerChild(e, filesTree){
+          console.log(e.target);
+          if(e.target.className.includes('caret')){
+            var selectedID = e.target.getAttribute("data-id");
+            var selectedNode = filesTree.find((obj, i) => {
+              if (obj.id == selectedID) {
+                  return filesTree[i]; // stop searching
+                }
+            });
+            console.log(selectedNode);
+            if(selectedNode.node && selectedNode.node.length > 0){
+              craeteChildTree(e.target, selectedNode.node);
+            }
+          }
+        }
+
+        //** Creating Inner child **//
+        function craeteChildTree(target, data){
+          var innerParent = document.createElement("ul");
+          innerParent.setAttribute("id", "innerParent");
+          innerParent.setAttribute("class", "innerHolder");
+          innerParent.text = "hello"
+          target.insertAdjacentElement("afterend", innerParent);
+
+          for(var i = 0; i < data.length; i++){
+            var child = `<li id="tree${data[i].id}">${createLabel(data[i])}</li>`;
+            var selector = `#tree${data[i].id}`;
+            innerParent.appendChild(convertStrToHtmlElement(child, selector));
+          }
+        }
+
+        //** Creating Parent (Host) **//
+        function craeteTree(data){
+          for(var i = 0; i < data.length; i++){
+            var child = `<li id="tree${data[i].id}">${createLabel(data[i])}</li>`;
+            var selector = `#tree${data[i].id}`;
+            treeHldr.appendChild(convertStrToHtmlElement(child, selector));
+          }
+        }
+
+
+        function convertStrToHtmlElement(str, selector){
+          var fdom = document.createDocumentFragment();
+          var parser = new DOMParser();
+          var final = parser.parseFromString(str, parseType);
+          return shedHTML(final, selector);
+        }
+
+        function createLabel(data){
+          // data-node-type="${data.hostType}"
+            return `<span id="caret-source-tree_${data.id}" class="caret" data-text="${data.name}" data-id="${data.id}" data-parent-id="${data.parentDirId}" data-loaded="false">${data.name}</span>`
+        }
+
+        function addToParent(data, parentIndex){
+            var fdom = document.createDocumentFragment();
+            var parser = new DOMParser();
+            var final = parser.parseFromString(data, parseType);
+            if(parentIndex == null){
+                fdom.appendChild(shedHTML(final, 'li'));
+                treestuc.querySelector('ul').appendChild(fdom);
+            } else {
+                fdom.appendChild(shedHTML(final, 'li'));
+                console.log(fdom, treestuc.querySelector(parentIndex).querySelector('ul'));
+                treestuc.querySelector(parentIndex).querySelector('ul').appendChild(fdom);
+            }
+
+        }
+
+         function createChildElemenets(childData, indx){
+            var childElements = "";
+            var i = 0;
+            while (i < childData.length){
+                childElements = childElements + '<li id="tree'+ indx+i +'">'+ childData[i].name +'</li>';
+                i++;
+            }
+            return childElements;
+         }
+
+
+        function shedHTML(data, selector){
+            const fragment = document.createDocumentFragment();
+            const nodes = data.querySelectorAll(selector);
+            for (let i = 0; i < nodes.length; i++) {
+                fragment.appendChild(nodes[i]);
+            }
+            return fragment;
+        }
+    </script>
+
+</body>
+
+</html>
